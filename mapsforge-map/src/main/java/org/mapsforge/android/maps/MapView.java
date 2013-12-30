@@ -242,12 +242,19 @@ public class MapView extends ViewGroup {
 		
 
 		setMapGeneratorInternal(mapGenerator);
+		
 		GeoPoint startPoint = this.mapGenerator.getStartPoint();
+		Byte startZoomLevel = this.mapGenerator.getStartZoomLevel();
+		
+		if (mapGenerator instanceof DatabaseRenderer) {
+			startPoint = this.databaseRenderer.getStartPoint();
+			startZoomLevel = this.databaseRenderer.getStartZoomLevel();
+		}		
+		
 		if (startPoint != null) {
 			this.mapViewPosition.setCenter(startPoint);
 		}
 
-		Byte startZoomLevel = this.mapGenerator.getStartZoomLevel();
 		if (startZoomLevel != null) {
 			this.mapViewPosition.setZoomLevel(startZoomLevel.byteValue());
 		}
@@ -272,14 +279,17 @@ public class MapView extends ViewGroup {
 		if (mapGenerator == null) {
 			throw new IllegalArgumentException("mapGenerator must not be null");
 		}
+		
+		this.mapWorker.setOnline(true);
 
 		if (mapGenerator instanceof DatabaseRenderer) {
 			this.databaseRenderer = new DatabaseRenderer(this.mapDatabase);
 			//((DatabaseRenderer) mapGenerator).setMapDatabase(this.mapDatabase);
+			this.mapWorker.setOnline(false);
 		}
 		this.mapGenerator = mapGenerator;
-		this.mapWorker.setDatabaseRenderer(this.databaseRenderer);
-		this.mapWorker.setMapGenerator(this.mapGenerator);
+		this.mapWorker.setDatabaseRenderer(this.databaseRenderer);		
+		this.mapWorker.setMapGenerator(this.mapGenerator);		
 	}
 
 	/**
