@@ -103,6 +103,7 @@ public class FileSystemTileCache implements TileCache {
 	 *            the directory of the serialized map file.
 	 * @return the deserialized map or null, in case of an error.
 	 */
+	@SuppressWarnings("unchecked")
 	private static Map<MapGeneratorJob, File> deserializeMap(File directory) {
 		File serializedMapFile = new File(directory, SERIALIZATION_FILE_NAME);
 		if (!serializedMapFile.exists() || !serializedMapFile.isFile() || !serializedMapFile.canRead()) {

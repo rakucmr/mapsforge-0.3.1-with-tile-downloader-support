@@ -21,7 +21,7 @@ import android.graphics.Canvas;
 /**
  * An {@code Overlay} displays additional geographical data on top of a map.
  */
-public interface Overlay {
+public interface Overlay extends Comparable<Overlay> {
 	/**
 	 * Draws this {@code Overlay} on the given canvas.
 	 * 

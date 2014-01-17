@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.mapsforge.android.AndroidUtils;
+import org.mapsforge.android.maps.inputhandling.TapEventListener;
 import org.mapsforge.android.maps.inputhandling.MapMover;
 import org.mapsforge.android.maps.inputhandling.TouchEventHandler;
 import org.mapsforge.android.maps.inputhandling.ZoomAnimator;
@@ -99,6 +100,7 @@ public class MapView extends ViewGroup {
 	private final Projection projection;
 	private final TouchEventHandler touchEventHandler;
 	private final ZoomAnimator zoomAnimator;
+	private TapEventListener tapListener;
 
 	/**
 	 * @param context
@@ -450,6 +452,20 @@ public class MapView extends ViewGroup {
 	@Override
 	public boolean onTrackballEvent(MotionEvent motionEvent) {
 		return this.mapMover.onTrackballEvent(motionEvent);
+	}
+	
+	public void setOnTapListener(TapEventListener l) {
+		this.tapListener = l;
+	}
+	
+	public void onTapEvent(GeoPoint p) {
+		if (this.tapListener != null) {
+			try {
+				this.tapListener.onTap(p);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
